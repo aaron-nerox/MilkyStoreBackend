@@ -1,2 +1,0 @@
-package tech.nerostarx.routes
-
