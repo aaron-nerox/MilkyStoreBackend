@@ -16,6 +16,7 @@ fun Application.configureRouting() {
         configureProductRouting()
         configureTopPicksRouting()
         configureTransactionRouting()
+        configureUserRouting()
     }
 }
 
