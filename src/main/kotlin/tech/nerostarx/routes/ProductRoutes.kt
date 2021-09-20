@@ -68,8 +68,8 @@ fun Route.configureTopPicksRouting(){
 
         }
 
-        //get a product from a pick id
-        get("/{id}/product"){
+        //get a product from a top pick by it's id
+        get("/{id_product}"){
 
         }
 
