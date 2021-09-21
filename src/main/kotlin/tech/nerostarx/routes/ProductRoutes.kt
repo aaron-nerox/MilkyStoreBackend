@@ -1,6 +1,8 @@
 package tech.nerostarx.routes
 
 import io.ktor.routing.*
+import org.jetbrains.exposed.sql.ResultRow
+import tech.nerostarx.models.*
 
 
 fun Route.configureProductRouting(){
@@ -89,3 +91,28 @@ fun Route.configureTopPicksRouting(){
         }
     }
 }
+
+fun toProduct(row:ResultRow):Product=
+    Product(
+        row[Products.productId],
+        row[Products.productName],
+        row[Products.productUnitPrice],
+        row[Products.productCategoryId],
+        row[Products.productImageLink],
+        row[Products.productDescription],
+        row[Products.isProductAvailable]
+    )
+
+fun toProductCategory(row: ResultRow):ProductCategory =
+    ProductCategory(
+        row[ProductCategories.categoryId],
+        row[ProductCategories.categoryImageLink],
+        row[ProductCategories.categoryName]
+    )
+
+fun toTopPick(row: ResultRow):TopPick=
+    TopPick(
+        row[TopPicks.topPickId],
+        row[TopPicks.topPickImageUrl],
+        row[TopPicks.productId]
+    )

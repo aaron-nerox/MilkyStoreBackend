@@ -1,6 +1,9 @@
 package tech.nerostarx.routes
 
 import io.ktor.routing.*
+import org.jetbrains.exposed.sql.ResultRow
+import tech.nerostarx.models.User
+import tech.nerostarx.models.Users
 
 fun Route.configureUserRouting(){
     route("/user"){
@@ -26,3 +29,13 @@ fun Route.configureUserRouting(){
         }
     }
 }
+
+fun toUser(row:ResultRow):User=
+    User(
+        row[Users.uid],
+        row[Users.userName],
+        row[Users.userSurname],
+        row[Users.userEmail],
+        row[Users.userPhone],
+        row[Users.userPictureUrl]
+    )

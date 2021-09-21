@@ -1,6 +1,11 @@
 package tech.nerostarx.routes
 
 import io.ktor.routing.*
+import org.jetbrains.exposed.sql.ResultRow
+import tech.nerostarx.models.CartItem
+import tech.nerostarx.models.CartItems
+import tech.nerostarx.models.UserCart
+import tech.nerostarx.models.UserCarts
 
 fun Route.configureCartRouting(){
     route("/cart"){
@@ -54,3 +59,18 @@ fun Route.configureCartRouting(){
         }
     }
 }
+
+fun toUserCart(row: ResultRow):UserCart =
+    UserCart(
+        row[UserCarts.cartReference],
+        row[UserCarts.uid],
+        row[UserCarts.currentTotal]
+    )
+
+fun toCartItem(row: ResultRow):CartItem =
+    CartItem(
+        row[CartItems.cartItemId],
+        row[CartItems.productId],
+        row[CartItems.quantity],
+        row[CartItems.cartReference]
+    )
