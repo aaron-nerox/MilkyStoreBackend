@@ -1,8 +1,10 @@
 package tech.nerostarx.models
 
+import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
 
+@Serializable
 data class CartItem (
     var cartItemId: Int,
     var productId: Int,

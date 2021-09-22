@@ -1,10 +1,12 @@
 package tech.nerostarx.models
 
+import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
 
+@Serializable
 data class User(
-    var uid: Int,
+    var uid: Int? = null,
     var userName: String,
     var userSurname: String,
     var userEmail: String,
