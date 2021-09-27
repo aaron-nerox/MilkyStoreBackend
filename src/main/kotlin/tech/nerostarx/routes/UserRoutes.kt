@@ -5,9 +5,6 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import tech.nerostarx.databases.MainDataBase
@@ -17,7 +14,7 @@ import tech.nerostarx.models.Users
 fun Route.configureUserRouting(){
     route("/user"){
 
-        //get the user by it's uid
+        //get the user by its uid
         get("/{uid}"){
             val uid = call.parameters["uid"] ?: return@get call.respondText("Missing a valid uid")
 
