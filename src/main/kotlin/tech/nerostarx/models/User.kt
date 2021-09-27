@@ -9,7 +9,7 @@ data class User(
     var uid: Int? = null,
     var userName: String,
     var userSurname: String,
-    var userEmail: String,
+    var userEmail: String? = null,
     var userPhone: String,
     var userPictureUrl: String)
 
