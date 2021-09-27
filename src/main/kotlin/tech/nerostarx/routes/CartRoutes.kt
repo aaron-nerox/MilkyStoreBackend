@@ -1,7 +1,13 @@
 package tech.nerostarx.routes
 
+import io.ktor.application.*
+import io.ktor.http.*
+import io.ktor.request.*
+import io.ktor.response.*
 import io.ktor.routing.*
-import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.transactions.transaction
+import tech.nerostarx.databases.MainDataBase
 import tech.nerostarx.models.CartItem
 import tech.nerostarx.models.CartItems
 import tech.nerostarx.models.UserCart
@@ -37,23 +43,63 @@ fun Route.configureCartRouting(){
         // a user's specific cart
         route("/users"){
             //get the cart using the user unique ui
-            get("/uid"){
+            get("/{uid}"){
+                val uid = call.parameters["uid"] ?: return@get call.respond(HttpStatusCode.BadRequest,"Missing a valid uid")
 
+                val result = transaction(MainDataBase.dbInstance){
+                    UserCarts.select { UserCarts.uid eq uid.toInt() }.map { toUserCart(it) }
+                }
+
+                call.respond(status = HttpStatusCode.OK, result)
             }
 
             //crate a cart for a specific user
             post("/create"){
+                val userCart = call.receive<UserCart>()
+
+                val result = transaction(MainDataBase.dbInstance) {
+                    UserCarts.insert {
+                        it[uid] = userCart.uid!!
+                        it[currentTotal] = userCart.currentTotal
+                    }
+                }.resultedValues?.map { toUserCart(it) }
+
+                if(result != null){
+                    call.respond(status = HttpStatusCode.Created, result)
+                }else{
+                    call.respond(status = HttpStatusCode.InternalServerError, "Error creating the cart")
+                }
 
             }
 
             //update the cart by reference
             put("/update/{cart_ref}"){
+                val cartRef = call.parameters["cart_ref"]
 
+                val newCart = call.receive<UserCart>()
+
+                if(cartRef != null){
+                    transaction(MainDataBase.dbInstance){
+                        UserCarts.update({ UserCarts.cartReference eq cartRef.toInt()}) {
+                            it[currentTotal] = newCart.currentTotal
+                        }
+                    }
+                }else{
+                    return@put call.respond(HttpStatusCode.BadRequest,"Missing a valid cart reference")
+                }
+
+                call.respond(HttpStatusCode.OK, "User cart updated.")
             }
 
             //delete the user's cart
-            delete("/delete/{cart_ref"){
+            delete("/delete/{cart_ref}"){
+                val cartRef = call.parameters["cart_ref"] ?: return@delete call.respond(HttpStatusCode.BadRequest,"Missing a valid cart reference")
 
+                transaction(MainDataBase.dbInstance){
+                    UserCarts.deleteWhere { UserCarts.cartReference eq cartRef.toInt() }
+                }
+
+                call.respond(HttpStatusCode.OK, "User cart deleted.")
             }
 
         }

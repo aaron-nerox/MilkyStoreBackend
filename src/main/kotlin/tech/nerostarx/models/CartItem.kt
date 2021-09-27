@@ -6,7 +6,7 @@ import org.jetbrains.exposed.sql.Table
 
 @Serializable
 data class CartItem (
-    var cartItemId: Int,
+    var cartItemId: Int? = null,
     var productId: Int,
     var quantity: Double,
     var cartReference: Int)

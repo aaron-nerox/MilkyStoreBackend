@@ -6,8 +6,8 @@ import org.jetbrains.exposed.sql.Table
 
 @Serializable
 data class UserCart(
-    var cartReference: Int,
-    var uid: Int,
+    var cartReference: Int? = null,
+    var uid: Int? = null,
     var currentTotal: Double)
 
 object UserCarts: Table(){
