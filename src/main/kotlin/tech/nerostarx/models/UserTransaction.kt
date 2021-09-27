@@ -6,7 +6,7 @@ import org.jetbrains.exposed.sql.Table
 
 @Serializable
 data class UserTransaction(
-    var transactionReference: Int,
+    var transactionReference: Int? = null,
     var cartReference: Int)
 
 object UserTransactions: Table(){
