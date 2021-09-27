@@ -20,22 +20,64 @@ fun Route.configureCartRouting(){
         route("/items"){
             //get a list of items providing the user's cart reference
             get("/{cart_ref}"){
+                val cartRef = call.parameters["cart_ref"] ?: return@get call
+                    .respond(HttpStatusCode.BadRequest,"Missing a valid cart reference.")
 
+                val result = transaction(MainDataBase.dbInstance){
+                    CartItems.select {
+                        CartItems.cartReference eq cartRef.toInt()
+                    }.map { toCartItem(it) }
+                }
+
+                call.respond(HttpStatusCode.OK, result)
             }
 
             // add an item to the cart
             post("/add") {
+                val cartItem = call.receive<CartItem>()
 
+                val results = transaction(MainDataBase.dbInstance){
+                    CartItems.insert {
+                        it[cartReference] = cartItem.cartReference
+                        it[productId] = cartItem.productId
+                        it[quantity] = cartItem.quantity
+                    }
+                }.resultedValues?.map { toCartItem(it) }
+
+                if(results != null){
+                    call.respond(HttpStatusCode.Created, results)
+                }else{
+                    call.respond(HttpStatusCode.InternalServerError, "error adding the item into a cart")
+                }
             }
 
             // modify an item inside the cart
             put("/update/{id}") {
+                val cartItemId = call.parameters["id"]
+                val newCartItem = call.receive<CartItem>()
 
+                if(cartItemId != null){
+                    transaction(MainDataBase.dbInstance){
+                        CartItems.update({CartItems.cartItemId eq cartItemId.toInt()}){
+                            it[quantity] = newCartItem.quantity
+                        }
+                    }
+                    call.respond(HttpStatusCode.OK,"Updated.")
+                }else{
+                    call.respond(HttpStatusCode.BadRequest,"Missing a valid id.")
+                }
             }
 
             // delete an item inside the cart
             delete("/delete/{id}") {
+                val cartItemId = call.parameters["id"] ?: return@delete call
+                    .respond(HttpStatusCode.BadRequest,"Missing a valid id.")
 
+                transaction(MainDataBase.dbInstance){
+                    CartItems.deleteWhere { CartItems.cartItemId eq cartItemId.toInt() }
+                }
+
+                call.respond(HttpStatusCode.OK, "Item removed successfully.")
             }
 
         }

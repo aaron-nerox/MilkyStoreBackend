@@ -9,7 +9,7 @@ object MainDataBase {
         jdbcUrl         = "jdbc:postgresql://localhost:5432/milky_store"
         driverClassName = "org.postgresql.Driver"
         username        = "nerostarx"
-        password        = "TheNewWorld"
+        password        = "**********"
         maximumPoolSize = 10
     }
 
