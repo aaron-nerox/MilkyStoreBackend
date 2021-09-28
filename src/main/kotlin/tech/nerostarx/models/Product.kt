@@ -6,7 +6,7 @@ import org.jetbrains.exposed.sql.Table
 
 @Serializable
 data class Product(
-    var productId: Int,
+    var productId: Int? = null,
     var productName: String,
     var productUnitPrice: Double,
     var productCategoryId: Int,

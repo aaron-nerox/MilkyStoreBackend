@@ -6,7 +6,7 @@ import org.jetbrains.exposed.sql.Table
 
 @Serializable
 data class ProductCategory(
-    var categoryId: Int,
+    var categoryId: Int? = null,
     var categoryImageLink: String,
     var categoryName: String)
 

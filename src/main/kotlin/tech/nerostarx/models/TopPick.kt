@@ -6,7 +6,7 @@ import org.jetbrains.exposed.sql.Table
 
 @Serializable
 data class TopPick(
-    var topPickId: Int,
+    var topPickId: Int? = null,
     var topPickImageUrl: String,
     var productId: Int)
 
