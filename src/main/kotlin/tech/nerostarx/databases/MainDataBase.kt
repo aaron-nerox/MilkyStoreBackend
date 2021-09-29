@@ -5,7 +5,7 @@ import com.zaxxer.hikari.HikariDataSource
 import org.jetbrains.exposed.sql.Database
 
 object MainDataBase {
-    private val config = HikariConfig().apply {
+    private val xconfig = HikariConfig().apply {
         jdbcUrl         = "jdbc:postgresql://localhost:5432/milky_store"
         driverClassName = "org.postgresql.Driver"
         username        = "nerostarx"
@@ -13,7 +13,7 @@ object MainDataBase {
         maximumPoolSize = 10
     }
 
-    private val xconfig = HikariConfig().apply {
+    private val config = HikariConfig().apply {
         jdbcUrl         = "jdbc:postgres://ec2-3-227-44-84.compute-1.amazonaws.com:5432/db9rsc5tedvdhn"
         driverClassName = "org.postgresql.Driver"
         username        = "rzxevgxfwselav"
