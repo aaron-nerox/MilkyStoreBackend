@@ -1,1 +1,1 @@
-rootProject.name = "ktor_playground"
+rootProject.name = "milky-store-backend"
