@@ -13,6 +13,14 @@ object MainDataBase {
         maximumPoolSize = 10
     }
 
+    private val xconfig = HikariConfig().apply {
+        jdbcUrl         = "jdbc:postgres://ec2-3-227-44-84.compute-1.amazonaws.com:5432/db9rsc5tedvdhn"
+        driverClassName = "org.postgresql.Driver"
+        username        = "rzxevgxfwselav"
+        password        = "877e1c0be866b04be373cafe50c5f6db7e8f0d290356f53a6bb505f89461f0d5"
+        maximumPoolSize = 10
+    }
+
     private val dataSource = HikariDataSource(config)
 
     val dbInstance by lazy {

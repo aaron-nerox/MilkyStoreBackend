@@ -19,7 +19,14 @@ repositories {
     mavenCentral()
 }
 
+tasks.create("stage") {
+    dependsOn("installDist")
+}
+
 dependencies {
+    implementation("io.ktor:ktor-auth:$ktor_version")
+    implementation("io.ktor:ktor-auth-jwt:$ktor_version")
+
     implementation("org.postgresql:postgresql:42.2.2")
     implementation("com.zaxxer:HikariCP:3.4.2")
 
