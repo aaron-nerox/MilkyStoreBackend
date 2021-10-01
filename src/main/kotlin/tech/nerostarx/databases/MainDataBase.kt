@@ -14,7 +14,7 @@ object MainDataBase {
     }
 
     private val config = HikariConfig().apply {
-        jdbcUrl         = "jdbc:postgres://ec2-3-227-44-84.compute-1.amazonaws.com:5432/db9rsc5tedvdhn"
+        jdbcUrl         = "jdbc:postgresql://ec2-3-227-44-84.compute-1.amazonaws.com:5432/db9rsc5tedvdhn"
         driverClassName = "org.postgresql.Driver"
         username        = "rzxevgxfwselav"
         password        = "877e1c0be866b04be373cafe50c5f6db7e8f0d290356f53a6bb505f89461f0d5"
